@@ -1,11 +1,11 @@
-module.exports = client => {
-  const API_KEY = require('../../configs/keys');
-  const User = require('../../models/User.model');
-  const axios = require('axios');
+module.exports = (client) => {
+  // const API_KEY = require("../../configs/keys");
+  const User = require("../../models/User.model");
+  const axios = require("axios");
   let apiUrl;
 
   //if user signed in (it's set to signed in - where message board)
-  client.on('connection', socketIO => {
+  client.on("connection", (socketIO) => {
     // console.log('new connection: ' + socketIO.id);
     //=-=-=--==-=-=-=-=-=-=-=-= Display the city of User -=-=-=-=-=-===-=--=-=-=-=-=-=-=-=-=-=--==-=-
 
@@ -49,30 +49,30 @@ module.exports = client => {
     //     );
     // });
     //=-=-=--==-=-=-=-=-=-=-=-= Update User City -=-=-=-=-=-===-=--=-=-=-=-=-=-=-=-=-=--==-=-
-    socketIO.on('url', data => {
+    socketIO.on("url", (data) => {
       const { userId, city } = data;
       User.findByIdAndUpdate({ _id: userId }, { city: city }, { new: true })
-        .then(updatedUser => {
+        .then((updatedUser) => {
           // console.log('updatedUser: ', updatedUser);
 
-          apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${updatedUser.city}&appid=${API_KEY}`;
+          apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${updatedUser.city}&appid=${process.env.API_KEY}`;
           axios
             .get(apiUrl)
-            .then(weather => {
+            .then((weather) => {
               // console.log(weather.data);
               const { main, wind } = weather.data;
               let temperature =
-                Math.round(1.8 * parseInt(main.temp - 273) + 32) + '°';
+                Math.round(1.8 * parseInt(main.temp - 273) + 32) + "°";
               let highTemp =
-                Math.round(1.8 * parseInt(main.temp_max - 273) + 32) + '°';
+                Math.round(1.8 * parseInt(main.temp_max - 273) + 32) + "°";
               let lowTemp =
-                Math.round(1.8 * parseInt(main.temp_min - 273) + 32) + '°';
+                Math.round(1.8 * parseInt(main.temp_min - 273) + 32) + "°";
               let feelsLike =
-                Math.round(1.8 * parseInt(main.feels_like - 273) + 32) + '°';
+                Math.round(1.8 * parseInt(main.feels_like - 273) + 32) + "°";
               let windSpeed = Math.round(2.23694 * parseInt(wind.speed));
               let pressure = Math.round(6895 / parseInt(main.pressure));
 
-              socketIO.emit('response', {
+              socketIO.emit("response", {
                 weather: weather.data,
                 temperature,
                 highTemp,
@@ -82,10 +82,10 @@ module.exports = client => {
                 pressure,
               });
             })
-            .catch(err => console.log(`Error in axios api call ${err}`));
+            .catch((err) => console.log(`Error in axios api call ${err}`));
           //end axios call
         })
-        .catch(err =>
+        .catch((err) =>
           console.log(`Error while creating the new city in DB ${err}`)
         ); //end  City.create()
     }); //end socketIO.on('url',data)
