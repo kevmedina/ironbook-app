@@ -1,0 +1,90 @@
+<div id="main-profile">
+  <div class="left-div">
+    <div id="user-profile">
+      <h5 class="text-center">{{firstName}} {{lastName}} </h5>
+      <div class="crop-user-image">
+        <img class="user-image profile-image" src="{{path}}" alt="{{username}}">
+      </div>
+      <a class="btn btn-secondary send-message mb-0 mt-2" href="" user_id={{_id}} _username={{username}}
+        _name="{{firstName}} {{lastName}}">Send
+        message</a>
+
+      {{#if isFriend}}
+      <a class="btn btn-primary delete-friend text-center" friendId="{{this.userFriendId}}"> Remove friend
+      </a>
+      {{else}}
+      <a class="btn btn-secondary add-friend text-center" user_id={{this._id}} _username={{this.username}}>Add to
+        friends</a>
+      {{/if}}
+
+    </div>
+    <div id="user-friends-list" class="friends-list">
+      <div class="friends-header-title">
+        <a class="username">
+          {{firstName}}'s Friends
+        </a>
+
+        <p>...</p>
+
+      </div>
+      {{!-- user friends list - each friend --}}
+      {{#each userFriends}}
+      {{> friendsList}}
+      {{/each}}
+      {{!-- end user friends list --}}
+    </div>
+  </div>
+  {{!-- --------------------------------------------------------------- --}}
+  <div class="center-div">
+    {{> newsFeed}}
+  </div>
+  {{!-- ---------------------------------------------- --}}
+  <div id="weatherMain" class="weather-div">
+    {{> weather}}
+  </div>
+  {{!-- ---------------------------------------------------------------------------- --}}
+  <div class="right-div">
+    {{!-- ------ Albums ------- --}}
+    <h4 class="text-center">{{firstName}}'s Albums</h4>
+    <div class="album">
+      {{#each albums}}
+      <div class="album-folder text-center">
+        <h5>{{this.name}}</h5>
+        <img src="/images/album/nature-2.jpg" alt="">
+        <img src="/images/album/nature-2.jpg" alt="">
+        <img src="/images/album/nature-2.jpg" alt="">
+        <img src="/images/album/nature-2.jpg" alt="">
+        {{!-- positioned on top --}}
+        <a href="/posts/album?album_id={{this._id}}">
+          <div class="fas fa-folder folder-icon"> </div>
+        </a>
+        {{!-- end folder positioned --}}
+      </div>
+      {{/each}}
+      {{!-- </div> --}}
+    </div>
+  </div><!-- end right div-->
+</div>
+
+{{!-- -- ----------------- visible max-width: 899px--------------------------------------------- --}}
+{{> mobilMenu}}
+{{!-- ----------------------------------------------------------------------------------- --}}
+{{!-- socket message board --}}
+{{> messageBoard}}
+{{!--end socket message board --}}
+
+
+{{!-- Start Chat menu --}}
+<div id="side-menu2" class="side-nav2">
+  <div class="curr-user">
+    <a class="curr-user-img">
+      <img class="users-small" src="{{user.path}}" alt="{{user.imageName}}">
+    </a>
+    <input id="search-user2" class="form-control search-user" type="text" placeholder="Search...">
+  </div>
+
+  {{!--  --}}
+  <div class="chat-mt">
+    {{> usersList2}}
+  </div>
+</div><!-- end slide menu-->

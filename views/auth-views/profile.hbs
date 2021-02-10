@@ -1,0 +1,79 @@
+<div id="main-profile">
+    <div class="left-div">
+        <div id="user-profile">
+            <h5 class="text-center">Welcome, {{user.firstName}}! </h5>
+            <div class="crop-user-image">
+                <img class="user-image profile-image" src="{{user.path}}" alt="{{user.username}}">
+            </div>
+            <a class="btn btn-secondary mb-0 mt-2" href="/profile/user-photo-upload">Upload Photo</a>
+            <a class="btn btn-secondary " href="/profile/profile-update">Update Profile</a>
+        </div>
+        <div id="friends-list" class="friends-list">
+            {{!-- current user --}}
+            <div class="friends-header-title">
+                <a class="username">
+                    {{!-- My Friends --}}
+                    {{#if isOneFriend}}
+                    You have <i style="color:#2e9cca;font-weight:bold;font-size:18px;">{{totalFriends}}</i> Friend
+                    {{else}}
+                    You have <i style="color:#2e9cca;font-weight:bold;font-size:18px;">{{totalFriends}}</i> Friends
+                    {{/if}}
+                </a>
+                <span>
+                    <div class="circles"></div>
+                    <div class="circles"></div>
+                    <div class="circles"></div>
+                    <i class="fas fa-user-friends" style="font-size:20px;color:#2e9cca;margin-left:2px;"></i>
+                </span>
+                <input id="search-user3" class="form-control search-user3" type="text" placeholder="Search friends...">
+
+            </div>
+
+            {{!-- each friend --}}
+            {{#each userFriends}}
+            {{> friendsList friends='true'}}
+            {{/each}}
+            {{!-- end each friend --}}
+
+        </div>
+    </div>
+    {{!-- --------------------------------------------------------------- --}}
+    <div class="center-div">
+        {{> newsFeed}}
+    </div>
+    {{!-- ---------------------------------------------- --}}
+    <div id="weatherMain" class="weather-div">
+        {{> weather}}
+    </div>
+    {{!-- ---------------------------------------------------------------------------- --}}
+    <div class="right-div">
+        <input id="search-user1" class="form-control search-user" style="z-index:3;" type="text"
+            placeholder="...">
+        <div class="all-users">
+            {{> usersList}}
+        </div>
+    </div><!-- end right div-->
+</div>
+
+{{!-- -- ------------- Sidebar visible max-width: 899px--------------------------------------------- --}}
+{{> mobilMenu}}
+{{!-- ----------------------------------------------------------------------------------- --}}
+{{!-- socket message board --}}
+{{> messageBoard}}
+{{!--end socket message board --}}
+
+
+{{!-- Start Chat menu --}}
+<div id="side-menu2" class="side-nav2">
+    <div class="curr-user">
+        <a class="curr-user-img">
+            <img class="users-small" src="{{user.path}}" alt="{{user.imageName}}">
+        </a>
+        <input id="search-user2" class="form-control search-user" type="text" placeholder="Search...">
+    </div>
+
+    {{!--  --}}
+    <div class="chat-mt">
+        {{> usersList2}}
+    </div>
+</div><!-- end slide menu-->
