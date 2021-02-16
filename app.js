@@ -39,11 +39,11 @@ app.use("/posts", require("./routes/user-routes/posts"));
 app.use("/comments", require("./routes/user-routes/comments"));
 
 // Redirects
-app.get("*", (req, res, next) => {
-  if (req.headers["x-forwarded-proto"] != "https")
-    res.redirect("https://ironbook-app.herokuapp.com" + req.url);
-  else next(); /* Continue to other routes if we're not redirecting */
-});
+// app.get("*", (req, res, next) => {
+//   if (req.headers["x-forwarded-proto"] != "https")
+//     res.redirect("https://ironbook-app.herokuapp.com" + req.url);
+//   else next(); /* Continue to other routes if we're not redirecting */
+// });
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
