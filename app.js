@@ -1,4 +1,5 @@
 require("dotenv").config();
+const sslRedirect = require("heroku-ssl-redirect");
 const express = require("express");
 const path = require("path");
 const favicon = require("serve-favicon");
@@ -12,7 +13,6 @@ const hbs = require("hbs");
 const userLocals = require("./configs/user-locals");
 
 const app = express();
-const sslRedirect = require("heroku-ssl-redirect");
 
 // enable ssl redirect
 app.use(sslRedirect());
