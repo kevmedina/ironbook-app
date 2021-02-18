@@ -13,6 +13,23 @@ const userLocals = require("./configs/user-locals");
 
 const app = express();
 
+// Enable reverse proxy support in Express. This causes the
+// the "X-Forwarded-Proto" header field to be trusted so its
+// value can be used to determine the protocol.
+app.enable("trust proxy");
+
+// Add a handler to inspect the req.secure flag. This allows us
+// to know whether the request was via http or https.
+app.use((req, res, next) => {
+  if (req.secure) {
+    // request was via https, so do no special handling
+    next();
+  } else {
+    // request was via http, so redirect to https
+    res.redirect("https://" + req.headers.host + req.url);
+  }
+});
+
 require("./configs/db.config");
 require("./routes/socket/socket.io");
 require("./configs/passport.config")(app);
@@ -37,13 +54,6 @@ app.use("/auth", require("./routes/auth-routes/auth"));
 app.use("/profile", require("./routes/user-routes/profile"));
 app.use("/posts", require("./routes/user-routes/posts"));
 app.use("/comments", require("./routes/user-routes/comments"));
-
-// Redirects
-app.get("*", (req, res, next) => {
-  if (req.headers("x-forwarded-proto") !== "https")
-    res.redirect("https://" + req.hostname + req.url);
-  else next(); /* Continue to other routes if we're not redirecting */
-});
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
