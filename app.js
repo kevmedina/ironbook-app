@@ -1,5 +1,5 @@
 require("dotenv").config();
-const sslRedirect = require("heroku-ssl-redirect");
+const sslRedirect = require("heroku-ssl-redirect").default;
 const express = require("express");
 const path = require("path");
 const favicon = require("serve-favicon");
