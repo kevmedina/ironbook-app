@@ -12,23 +12,10 @@ const hbs = require("hbs");
 const userLocals = require("./configs/user-locals");
 
 const app = express();
+const sslRedirect = require("heroku-ssl-redirect");
 
-// Enable reverse proxy support in Express. This causes the
-// the "X-Forwarded-Proto" header field to be trusted so its
-// value can be used to determine the protocol.
-app.enable("trust proxy");
-
-// Add a handler to inspect the req.secure flag. This allows us
-// to know whether the request was via http or https.
-app.use((req, res, next) => {
-  if (req.secure) {
-    // request was via https, so do no special handling
-    next();
-  } else {
-    // request was via http, so redirect to https
-    res.redirect("https://" + req.headers.host + req.url);
-  }
-});
+// enable ssl redirect
+app.use(sslRedirect());
 
 require("./configs/db.config");
 require("./routes/socket/socket.io");
