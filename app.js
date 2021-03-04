@@ -17,11 +17,6 @@ const app = express();
 // enable ssl redirect
 app.use(sslRedirect());
 
-require("./configs/db.config");
-require("./routes/socket/socket.io");
-require("./configs/passport.config")(app);
-app.use(userLocals);
-
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "hbs");
 
@@ -32,6 +27,11 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 hbs.registerPartials(__dirname + "/views/partials");
+
+require("./configs/db.config");
+require("./routes/socket/socket.io");
+require("./configs/passport.config")(app);
+app.use(userLocals);
 
 // Routes
 // - Make sure when you're in routes not to include the routes end point
