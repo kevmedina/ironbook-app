@@ -22,8 +22,8 @@ app.set("view engine", "hbs");
 
 app.use(flash());
 app.use(logger("dev"));
-app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 hbs.registerPartials(__dirname + "/views/partials");
