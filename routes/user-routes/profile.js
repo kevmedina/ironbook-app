@@ -15,8 +15,10 @@ router.get("/user-page", ensureLoggedIn("/auth/login"), (req, res) => {
   //1.Get all the post to display on profile/user-page for current user in session
   Post.find()
     .populate("author")
+    .exec()
     .then((posts) => {
       //Take out authors password(not to send to the front end, so no one can see)
+      console.log("POSTS: ", posts);
       const newPosts = posts.map((post) => {
         let { _id, content, picPath, picName } = post;
         let { username, firstName, lastName, email, path } = post.author;
@@ -49,6 +51,7 @@ router.get("/user-page", ensureLoggedIn("/auth/login"), (req, res) => {
               path: "friends",
               populate: [{ path: "userId" }],
             })
+            .exec()
             .then((userFromDB) => {
               const { friends } = userFromDB;
 
@@ -231,6 +234,7 @@ router.get("/user-details", (req, res, next) => {
         },
       ],
     })
+    .exec()
     .then((foundOne) => {
       if (
         userInSession &&
@@ -287,6 +291,7 @@ router.get("/user-details", (req, res, next) => {
               //Check if this user is friend with current user in session(so we can base  on that change add button to remove  - if they are friends)
               User.findById(req.user._id)
                 .populate("friends")
+                .exec()
                 .then((userData) => {
                   const getUserFromFriends = userData.friends.filter(
                     (friend) => friend.userId.toString() === user_id.toString()

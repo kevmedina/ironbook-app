@@ -1,15 +1,15 @@
-const express = require('express');
-const passport = require('passport');
+const express = require("express");
+const passport = require("passport");
 const router = express.Router();
-const { ensureLoggedIn, ensureLoggedOut } = require('connect-ensure-login');
-const uploadCloud = require('../../configs/cloudinary.config');
-const Post = require('../../models/Post.model');
-const User = require('../../models/User.model');
-const Comment = require('../../models/Comment.model');
+const { ensureLoggedIn, ensureLoggedOut } = require("connect-ensure-login");
+const uploadCloud = require("../../configs/cloudinary.config");
+const Post = require("../../models/Post.model");
+const User = require("../../models/User.model");
+const Comment = require("../../models/Comment.model");
 
 //Create comments - POST
 // -=-=-=-=-=-=-=-=--=-=-=-=--=-=-=-=-=-=-=-=-=--=-=-=-=-=-=-
-router.post('/post-details', (req, res, next) => {
+router.post("/post-details", (req, res, next) => {
   const user = req.user;
   const { post_id } = req.query;
   // Post.findById(post_id)
@@ -44,13 +44,15 @@ router.post('/post-details', (req, res, next) => {
     imgPath: user.path, //for imgPath I add author image
     imageName: user.imageName, //author image name
   })
-    .then(commentFromDB => {
-      console.log('Comment created: ', commentFromDB);
+    .then((commentFromDB) => {
+      console.log("Comment created: ", commentFromDB);
       res.redirect(
         `/comments/post-details/comments?post_id=${commentFromDB.postId}`
       );
     })
-    .catch(err => console.log(`Error while trying to create comments ${err}`));
+    .catch((err) =>
+      console.log(`Error while trying to create comments ${err}`)
+    );
   // })
   // .catch(err => console.log(err));
 });
@@ -58,19 +60,20 @@ router.post('/post-details', (req, res, next) => {
 //Post comments - Get
 // -=-=-=-=-=-=-=-=--=-=-=-=--=-=-=-=-=-=-=-=-=--=-=-=-=-=-=-
 router.get(
-  '/post-details/comments',
-  ensureLoggedIn('/auth/login'),
+  "/post-details/comments",
+  ensureLoggedIn("/auth/login"),
   (req, res, next) => {
     const { post_id } = req.query;
     //   Comment.findOne({ postId: post_id })
     Comment.find({})
-      .populate('author')
-      .then(comments => {
+      .populate("author")
+      .exec()
+      .then((comments) => {
         const allComments = comments
-          .filter(comment => {
+          .filter((comment) => {
             return comment.postId.toString() === post_id.toString(); // == because one is string and the other is a number, they are 2 diff types
           }) //map is to filter out hash password from every author
-          .map(comment => {
+          .map((comment) => {
             const { _id, content, author } = comment;
             if (req.user) {
               if (author._id.toString() === req.user._id.toString()) {
@@ -86,26 +89,28 @@ router.get(
           });
 
         if (allComments.length === 0) {
-          res.render('post-views/post-comments', {
+          res.render("post-views/post-comments", {
             message: "There's no comments",
           });
           return;
         }
 
         // console.log('filtered comments: ', allComments);
-        res.render('post-views/post-comments', { allComments });
+        res.render("post-views/post-comments", { allComments });
       })
-      .catch(err => console.log(`Error while getting comments from DB ${err}`));
+      .catch((err) =>
+        console.log(`Error while getting comments from DB ${err}`)
+      );
   }
 );
 
 //Post deleted comments
 // -=-=-=-=-=-=-=-=--=-=-=-=--=-=-=-=-=-=-=-=-=--=-=-=-=-=-=-
-router.post('/delete-comment', (req, res, next) => {
+router.post("/delete-comment", (req, res, next) => {
   const { comment_id } = req.query;
   Comment.findByIdAndDelete(comment_id)
-    .then(() => res.redirect('back'))
-    .catch(err => next(err));
+    .then(() => res.redirect("back"))
+    .catch((err) => next(err));
 });
 
 module.exports = router;
