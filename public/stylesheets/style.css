@@ -7,7 +7,7 @@ White: #ffffff
 body {
   margin: 0;
   padding: 0;
-  font: 16px 'monospace,Lucida Grande, Helvetica, Arial, sans-serif';
+  font: 16px "monospace,Lucida Grande, Helvetica, Arial, sans-serif";
   box-sizing: border-box;
 }
 #user-profile .btn {
@@ -582,7 +582,7 @@ input::placeholder {
 }
 /*------- albums -------- */
 .albums-body {
-  background: url('../images/bg-1.jpeg') no-repeat;
+  background: url("../images/bg-1.jpeg") no-repeat;
   background-size: cover;
   overflow: hidden;
 }
@@ -756,7 +756,7 @@ input::placeholder {
 
 /* post image form */
 .image-form {
-  background: url('../images/album/nature-8.jpg') no-repeat;
+  background: url("../images/album/nature-8.jpg") no-repeat;
   background-size: cover;
   height: 100vh;
   overflow: hidden;
@@ -803,7 +803,7 @@ input::placeholder {
 .form {
   position: relative;
   padding: 30px;
-  font: 14px 'Lucida Grande', Helvetica, Arial, sans-serif;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -1223,7 +1223,6 @@ a.delete-friend:hover {
     width: 39.5vw;
     color: #fff;
   }
-
   .weather {
     width: 39.5vw;
     height: 100vh;
@@ -1271,8 +1270,15 @@ a.delete-friend:hover {
 }
 /* ---------------  768 ----------------- */
 @media (max-width: 768px) {
-  .welcome-page-container > div:first-child {
-    display: none;
+  .welcome-page-container {
+    flex-direction: column;
+  }
+  .welcome-page-container > div:first-child h1 {
+    font-size: 3rem;
+    margin-top: 50px;
+  }
+  .welcome-page-container > div:first-child h3 {
+    font-size: 1.3rem;
   }
   .left-div {
     display: none;
@@ -1291,7 +1297,7 @@ a.delete-friend:hover {
   }
 }
 /* -------- max 500 ---------------- */
-@media (max-width: 500px) {
+@media (max-width: 480px) {
   .center-div {
     position: relative;
     left: 0;
